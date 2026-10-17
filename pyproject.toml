@@ -1,0 +1,17 @@
+[project]
+name = "inferopt"
+version = "0.1.0"
+description = "Benchmark lab: measure what inference optimizations actually buy you (TTFT, TPOT, tokens/sec, cost)"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["inferopt"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
