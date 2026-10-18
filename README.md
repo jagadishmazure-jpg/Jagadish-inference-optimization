@@ -142,7 +142,7 @@ Test suite size (real collection, re-checked in CI):
 
 <!-- run: python scripts/count_tests.py -->
 ```text
-33 tests collected
+36 tests collected
 ```
 <!-- /run -->
 
