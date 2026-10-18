@@ -1,6 +1,6 @@
 """Synthetic workloads. Token counts are illustrative, not measured."""
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 
 @dataclass(frozen=True)

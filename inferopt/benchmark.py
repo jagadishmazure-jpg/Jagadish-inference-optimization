@@ -5,7 +5,6 @@ from dataclasses import dataclass, replace
 
 from .configs import InferenceConfig
 from .costmodel import RunMetrics, SimulatedBackend
-from .workloads import Workload
 
 
 @dataclass(frozen=True)

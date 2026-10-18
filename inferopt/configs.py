@@ -1,6 +1,6 @@
 """Inference configuration: the knobs this lab benchmarks."""
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 QUANTIZATIONS = ("fp16", "int8", "int4")
 CACHE_STATES = ("on", "off")

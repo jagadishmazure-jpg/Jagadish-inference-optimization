@@ -6,6 +6,7 @@ from unittest import mock
 import pytest
 
 from inferopt import (
+    SIMULATED_QUALITY,
     BenchmarkResult,
     BenchmarkRunner,
     InferenceConfig,
@@ -19,7 +20,6 @@ from inferopt import (
     repeated_prefix,
     short_chat,
 )
-
 
 # --- configs -------------------------------------------------------------
 
@@ -179,10 +179,30 @@ def test_compare_markdown_has_header():
     assert md.startswith("| config |")
 
 
-def test_recommend_unconstrained_picks_cheapest():
+def test_recommend_never_picks_int4_without_eval_evidence():
     rec = recommend(_grid())
+    assert rec.config.quantization != "int4"
+    assert "quality gate" in rec.binding_constraint
+    assert any("no int4 eval score" in e for e in rec.excluded)
+
+
+def test_recommend_int4_when_evals_pass():
+    rec = recommend(_grid(), quality={"fp16": 0.90, "int8": 0.89, "int4": 0.88})
     assert rec.config.quantization == "int4"
     assert rec.binding_constraint is None
+    assert "0.98 of fp16" in rec.quality_check
+
+
+def test_recommend_rejects_int4_below_floor():
+    rec = recommend(_grid(), quality=SIMULATED_QUALITY, min_relative_quality=0.97)
+    assert rec.config.quantization != "int4"
+    assert any("below the 0.97 floor" in e for e in rec.excluded)
+
+
+def test_quality_gate_can_make_constraints_impossible():
+    only_int4 = [r for r in _grid() if r.config.quantization == "int4"]
+    with pytest.raises(ValueError, match="quality gate"):
+        recommend(only_int4)
 
 
 def test_recommend_respects_ttft_constraint_and_cites_it():

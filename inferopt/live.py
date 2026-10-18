@@ -12,7 +12,6 @@ pretend to control server-side quantization — it documents what ran.
 """
 
 import json
-import time
 import urllib.error
 import urllib.request
 
